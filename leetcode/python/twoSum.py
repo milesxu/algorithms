@@ -22,3 +22,23 @@ class Solution:
             if target - p in keys:
                 return (keys[target - p], i + 1)
             keys[p] = i + 1
+
+    def twoSum3(self, num, target):
+        keys = {}
+        for i, p in enumerate(num, start=1):
+            if p in keys:
+                return (keys[p], i)
+            keys[target - p] = i
+
+    # after sorting, index of iems are changed.
+    def twoSum2(self, num, target):
+        num.sort()
+        i, j = 0, len(num) - 1
+        while i < j:
+            p = num[i] + num[j]
+            if p == target:
+                return (i + 1, j + 1)
+            elif p < target:
+                i += 1
+            else:
+                j -= 1
