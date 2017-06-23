@@ -1,3 +1,5 @@
+import sys
+
 class Solution:
 
     # @return a list of lists of length 3, [[val1,val2,val3]]
@@ -29,6 +31,31 @@ class Solution:
         compose(nopositive, positive)
         compose(positive, nopositive)
         return [list(p) for p in result]
+
+    def threeSum3(self, num):
+        sortnum, result, i = sorted(num), [], 0
+        while i < len(num) and sortnum[i] <= 0:
+            if i and sortnum[i] == sortnum[i - 1]:
+                i += 1
+                continue
+            target = -sortnum[i]
+            j, k = i + 1, len(num) - 1
+            while j < k:
+                test = sortnum[j] + sortnum[k]
+                if test == target:
+                    result.append([sortnum[i], sortnum[j], sortnum[k]])
+                    j += 1
+                    k -= 1
+                    while j < k and sortnum[j] == sortnum[j - 1]:
+                        j += 1
+                    while j < k and sortnum[k] == sortnum[k + 1]:
+                        k -= 1
+                elif test < target:
+                    j += 1
+                else:
+                    k -= 1
+            i += 1
+        return result
 
     def threeSum1(self, num):
         sortnum, result, i = sorted(num), [], 0
@@ -74,7 +101,6 @@ class Solution:
         #             start, end = start + 1, end - 1
         # return result
 
-
     def threeSum2(self, num):
         sortnum, result, i = sorted(num), [], 0
         while i < len(sortnum) - 2 and sortnum[i] <= 0:
@@ -103,31 +129,26 @@ class Solution:
 
     # @return an integer
     def threeSumClosest(self, num, target):
-        sortnum, dist, result, preend = sorted(num), None, None, len(num) - 1
+        sortnum, dist, result, end0 = sorted(num), sys.maxsize, 0, len(num) - 1
         for i in range(len(num) - 2):
             if i and sortnum[i] == sortnum[i - 1]:
                 continue
-            if dist and sortnum[i] > target // 3:
-                break
-            start, end = i + 1, preend
-            t, tdist, tresult = target - sortnum[i], None, None
+            start, end = i + 1, end0
+            test = target - sortnum[i]
             while start < end:
                 if end < len(num) - 1 and sortnum[end] == sortnum[end + 1]:
                     end -= 1
                     continue
-                temp = t - sortnum[start] - sortnum[end]
+                temp = test - sortnum[start] - sortnum[end]
                 if temp == 0:
                     return target
-                if tdist is None or tdist > abs(temp):
-                    tdist, tresult, preend = abs(temp), target - temp, end
+                if dist > abs(temp):
+                    dist, result, end0 = abs(temp), target - temp, end
                 if temp < 0:
                     end -= 1
                 else:
                     start += 1
-            if dist is None or dist > tdist:
-                dist, result = tdist, tresult
         return result
-
 
     def threeSumClosest1(self, num, target):
         sortnum, dist, result, i = sorted(num), None, None, 0
@@ -166,18 +187,19 @@ class Solution:
 
 if __name__ == '__main__':
     tsum = Solution()
-    print(tsum.threeSum2([3, 0, -2, -1, 1, 2]))
-    print(tsum.threeSum2([-4, -2, -2, -2, 0, 1, 2, 2, 2, 3, 3, 4, 4, 6, 6]))
-    print(tsum.threeSumClosest1([1, 1, 1, 0], -100))
-    print(tsum.threeSumClosest1([1, 2, 4, 8, 16, 32, 64, 128], 82))
-    print(tsum.threeSumClosest1([4, 0, 5, -5, 3, 3, 0, -4, -5], -2))
-    print(tsum.threeSumClosest1([-16, -2, 17, -16, 3, -7, -13, 20, -4, 12, 5,
-                                13, -7, 0, 5, 4, -17, -16, 9, 1, 8, -6, 0, -8,
-                                16, 10, -6, 9, -4, 12, 16, 5, 19, 2, -9, -17,
-                                -8, -17, 7, -10, 2, 20, -18, -20, -14, -6, 6,
-                                17, -10, -8, 18, -15, 7, -9, 13, 13, -13, 3,
-                                18, 10, 12, 16, -6, -19, -6, -13, 8, -5, 16,
-                                5, 8, -3, -9, -9, -5, 14, 14, -13, -18, 13,
-                                15, -3, 9, 14, 18, -14, -14, 1, 20, -4, -6, 0,
-                                3, 15, 20, 20, 9, 13, -8, -1, -2, 6], -58))
-    print(tsum.threeSum2([0,0,0]))
+    #print(tsum.threeSum2([3, 0, -2, -1, 1, 2]))
+    #print(tsum.threeSum2([-4, -2, -2, -2, 0, 1, 2, 2, 2, 3, 3, 4, 4, 6, 6]))
+    #print(tsum.threeSumClosest1([1, 1, 1, 0], -100))
+    #print(tsum.threeSumClosest1([1, 2, 4, 8, 16, 32, 64, 128], 82))
+    #print(tsum.threeSumClosest1([4, 0, 5, -5, 3, 3, 0, -4, -5], -2))
+    #print(tsum.threeSumClosest1([-16, -2, 17, -16, 3, -7, -13, 20, -4, 12, 5,
+    #                             13, -7, 0, 5, 4, -17, -16, 9, 1, 8, -6, 0, -8,
+    #                             16, 10, -6, 9, -4, 12, 16, 5, 19, 2, -9, -17,
+    #                             -8, -17, 7, -10, 2, 20, -18, -20, -14, -6, 6,
+    #                             17, -10, -8, 18, -15, 7, -9, 13, 13, -13, 3,
+    #                             18, 10, 12, 16, -6, -19, -6, -13, 8, -5, 16,
+    #                             5, 8, -3, -9, -9, -5, 14, 14, -13, -18, 13,
+    #                             15, -3, 9, 14, 18, -14, -14, 1, 20, -4, -6, 0,
+    #                             3, 15, 20, 20, 9, 13, -8, -1, -2, 6], -58))
+    #print(tsum.threeSum2([0, 0, 0]))
+    print(tsum.threeSumClosest([-1, 0, 1, 1, 55], 3))
