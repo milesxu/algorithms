@@ -16,4 +16,5 @@
 15. 如果希望用 range-for loop，自定义的类必须有 begin() 和 end() 函数。
 16. Function Object，先初始化，然后通过重载的 () 操作符调用。可以和 template 联用，和 lambda 同理。
 17. template 的参数数量也可以是可变的
-18. 类似 typedef 那样的别名可以用 using 语句。using 可以用来绑定一个 template，然后生成新的 template。s
+18. 类似 typedef 那样的别名可以用 using 语句。using 可以用来绑定一个 template，然后生成新的 template。
+19. 实现继承：共享父类的功能，简化实现开销；接口继承：允许不同的派生类通过共同的基类接口而可互换地被利用。接口继承又称为运行时多态。相对地，通过 template 提供的对多个类的统一使用经常称为编译时多态。
